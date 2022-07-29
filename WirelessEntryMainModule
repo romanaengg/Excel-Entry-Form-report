@@ -1,0 +1,512 @@
+Option Explicit
+Public EnableEvents As Boolean
+
+
+Sub Reset()
+     With entryForm
+     .cmdSubmit.Visible = True
+     .cmdUpdate.Visible = False
+     
+  'txt boxes clear
+    .txtName.Value = ""
+    .txtContact.Value = ""
+    .txtEmail.Value = ""
+    .txtLocation.Value = ""
+    .txtOtrs.Value = ""
+    .txtId.Value = ""
+    .txtReqdt.Value = ""
+    .txtBdt.Value = ""
+   
+   .txtCall1.Visible = False
+    
+    .txtCall1.Value = ""
+    .txtCall1.Locked = False
+    .txtCall2.Locked = False
+    .txtCall3.Locked = False
+    
+    .txtCall2.Value = ""
+    .txtCall2.Visible = False
+  
+    .txtCall3.Value = ""
+      .txtCall3.Visible = False
+    
+    .txtRecord.Value = ""
+    
+    'labels
+    .lblAC1.Visible = False
+    .lblAC2.Visible = False
+    .lblAC3.Visible = False
+    .lblDT1.Visible = False
+    .lblDT2.Visible = False
+    .lblDT3.Visible = False
+    .lblC1.Visible = False
+    .lblC2.Visible = False
+    .lblC3.Visible = False
+    
+    
+  'option buttons clear
+    .optCno.Value = False
+    .optCyes.Value = False
+    .optPhigh.Value = False
+    .optPlow.Value = False
+    .optPmed.Value = False
+    .optPno.Value = False
+    .optPack50.Value = False
+    .optPack25.Value = False
+    .optPack10.Value = False
+    .optPack5.Value = False
+    .optNone = False
+    .optLeadCall.Value = False
+    .optLeadWeb.Value = False
+    .optLeadOth.Value = False
+    
+    
+  'add Combo Box items
+    .cmbStatus.Clear
+    .cmbStatus.AddItem "IN PROGRESS"
+    .cmbStatus.AddItem "DENIED - COST"
+    .cmbStatus.AddItem "DENIED – NO LONGER NEED"
+    .cmbStatus.AddItem "DENIED – SPEED REQUEST"
+    .cmbStatus.AddItem "DENIED – OUT OF COVERAGE"
+    .cmbStatus.AddItem "FOLLOW UP – UNDECIDED"
+    .cmbStatus.AddItem "FOLLOW UP – NO CONTACT"
+    .cmbStatus.AddItem "CONTACTED - BOOKED"
+    .lstdata.RowSource = ""
+    
+   
+    
+                
+    End With
+    
+End Sub
+Sub Submit()
+
+ Dim Sh As Worksheet
+Dim iRow As Long
+ 
+
+Set Sh = ThisWorkbook.Sheets("maindata")
+ 
+iRow = [counta(maindata!E:E)] + 1
+
+With Sh
+   
+        .Cells(iRow, 1) = iRow - 1
+        
+     
+  'Lead Type
+        If entryForm.optLeadCall = True Then .Cells(iRow, 2) = "Call Center"
+        If entryForm.optLeadWeb = True Then .Cells(iRow, 2) = "Website"
+        If entryForm.optLeadOth = True Then .Cells(iRow, 2) = "Other"
+  'req date
+  
+        .Cells(iRow, 3) = entryForm.txtReqdt.Value
+        
+        .Cells(iRow, 4) = entryForm.txtName.Value
+       
+        .Cells(iRow, 5) = entryForm.txtContact.Value
+         
+        .Cells(iRow, 6) = entryForm.txtEmail.Value
+        .Cells(iRow, 7) = entryForm.txtOtrs.Value
+        .Cells(iRow, 8) = entryForm.txtId.Value
+        .Cells(iRow, 9) = entryForm.cmbStatus.Value
+        
+    'PAck
+         If entryForm.optPack50 = True Then .Cells(iRow, 10) = "RHS 50"
+        If entryForm.optPack25 = True Then .Cells(iRow, 10) = "RHS 25"
+        If entryForm.optPack10 = True Then .Cells(iRow, 10) = "RHS 10"
+        If entryForm.optPack5 = True Then .Cells(iRow, 10) = "RHS 5"
+        If entryForm.optNone = True Then .Cells(iRow, 10) = "None"
+        
+    'Booking
+  
+        .Cells(iRow, 11) = entryForm.txtBdt.Value
+        
+        .Cells(iRow, 12) = entryForm.txtLocation.Value
+    'Coverage
+        .Cells(iRow, 13) = IIf(entryForm.optCyes = True, "Yes", "No")
+    'Probability
+        If entryForm.optPhigh = True Then .Cells(iRow, 14) = "High"
+        If entryForm.optPmed = True Then .Cells(iRow, 14) = "Medium"
+        If entryForm.optPlow = True Then .Cells(iRow, 14) = "Low"
+        If entryForm.optPno = True Then .Cells(iRow, 14) = "N/A"
+          
+      
+ End With
+
+ 
+
+End Sub
+
+Sub Show_form()
+entryForm.Show vbModeless
+End Sub
+
+Sub Update()
+Application.ScreenUpdating = False
+ 
+Dim Sh As Worksheet
+Dim iRow As Long
+ 
+
+Set Sh = ThisWorkbook.Sheets("maindata")
+
+If Not entryForm.txtRecord.Value = "" Then
+    
+    iRow = entryForm.txtRecord.Value + 1
+  
+   With Sh
+       'Lead Type
+        If entryForm.optLeadCall = True Then .Cells(iRow, 2) = "Call Center"
+        If entryForm.optLeadWeb = True Then .Cells(iRow, 2) = "Website"
+        If entryForm.optLeadOth = True Then .Cells(iRow, 2) = "Other"
+  'req date
+  
+        .Cells(iRow, 3) = entryForm.txtReqdt.Value
+        
+        .Cells(iRow, 4) = entryForm.txtName.Value
+       
+        .Cells(iRow, 5) = entryForm.txtContact.Value
+         
+        .Cells(iRow, 6) = entryForm.txtEmail.Value
+        .Cells(iRow, 7) = entryForm.txtOtrs.Value
+        .Cells(iRow, 8) = entryForm.txtId.Value
+        .Cells(iRow, 9) = entryForm.cmbStatus.Value
+        
+    'PAck
+        If entryForm.optPack50 = True Then .Cells(iRow, 10) = "RHS 50"
+        If entryForm.optPack25 = True Then .Cells(iRow, 10) = "RHS 25"
+        If entryForm.optPack10 = True Then .Cells(iRow, 10) = "RHS 10"
+        If entryForm.optPack5 = True Then .Cells(iRow, 10) = "RHS 5"
+        If entryForm.optNone = True Then .Cells(iRow, 10) = "None"
+        
+    'Booking
+  
+        .Cells(iRow, 11) = entryForm.txtBdt.Value
+        
+        .Cells(iRow, 12) = entryForm.txtLocation.Value
+    'Coverage
+        .Cells(iRow, 13) = IIf(entryForm.optCyes = True, "Yes", "No")
+    'Probability
+        If entryForm.optPhigh = True Then .Cells(iRow, 14) = "High"
+        If entryForm.optPmed = True Then .Cells(iRow, 14) = "Medium"
+        If entryForm.optPlow = True Then .Cells(iRow, 14) = "Low"
+        If entryForm.optPno = True Then .Cells(iRow, 14) = "N/A"
+     
+     If entryForm.txtCall1.Locked = True Then
+             If entryForm.txtCall2.Locked = True Then
+                     If Not entryForm.txtCall3 = "" Then
+                        .Cells(iRow, 21) = [text(now(), "MM/DD/YY HH:MM")]
+                        .Cells(iRow, 22) = Application.UserName
+                        .Cells(iRow, 23) = entryForm.txtCall3.Value
+                        Else
+                        MsgBox "Please enter Call 3 Output.", vbOKOnly + vbInformation, "Information required"
+                        entryForm.txtCall3.SetFocus
+                      End If
+                ElseIf Not entryForm.txtCall2 = "" Then
+                        .Cells(iRow, 18) = [text(now(), "MM/DD/YY HH:MM")]
+                        .Cells(iRow, 19) = Application.UserName
+                        .Cells(iRow, 20) = entryForm.txtCall2.Value
+                    Else
+                    MsgBox "Please enter Call2 Output.", vbOKOnly + vbInformation, "Information required"
+                    End If
+                         
+        ElseIf Not entryForm.txtCall1 = "" Then
+            .Cells(iRow, 15) = [text(now(), "MM/DD/YY HH:MM")]
+            .Cells(iRow, 16) = Application.UserName
+            .Cells(iRow, 17) = entryForm.txtCall1.Value
+            Else
+            MsgBox "Please enter Call1 Output.", vbOKOnly + vbInformation, "Information required"
+            End If
+        
+        
+        
+      End With
+      With Sheet1
+ .Range("y4") = [text(now(), "DD-MM-YYYY HH:MM:SS")]
+ End With
+  
+   Else
+   MsgBox "Change to Contact number or OTRS not allowed.", vbOKOnly + vbInformation, "Restricted"
+          
+ 
+   End If
+   
+     
+          
+End Sub
+
+Sub SearchContact()
+       
+        
+
+      
+        
+          Application.ScreenUpdating = False
+        Dim shMaindata As Worksheet
+        Dim shSearchData As Worksheet
+        
+       
+        Dim idataRow As Long
+        Dim iSearchRow As Long
+        
+        Dim sCont As String
+     
+        Set shMaindata = ThisWorkbook.Sheets("maindata")
+        Set shSearchData = ThisWorkbook.Sheets("search")
+        sCont = entryForm.txtContact.Value
+        
+        idataRow = shMaindata.Range("A" & Application.Rows.Count).End(xlUp).Row
+         '   If shMaindata.FilterMode = True Then
+         '  shMaindata.AutoFilter = False
+          '  End If
+         
+         shMaindata.Range("A1:Y" & idataRow).AutoFilter field:=5, Criteria1:=sCont
+        
+        If Application.WorksheetFunction.Subtotal(3, Range("E:E")) >= 2 Then
+            
+            shSearchData.Cells.Clear
+             
+            shMaindata.AutoFilter.Range.Copy shSearchData.Range("A1")
+            Application.CutCopyMode = False
+            
+            iSearchRow = shSearchData.Range("A" & Application.Rows.Count).End(xlUp).Row
+            
+                entryForm.lstdata.ColumnCount = 25
+                entryForm.lstdata.ColumnWidths = "35,50,50,60,50,60,50,50,60,40"
+                entryForm.lstdata.ColumnHeads = True
+                
+            If iSearchRow > 1 Then
+                entryForm.lstdata.RowSource = "search!A2:Y" & iSearchRow
+                
+             Else
+         
+           
+            End If
+        Else
+          shSearchData.Cells.Clear
+             
+            shMaindata.AutoFilter.Range.Copy shSearchData.Range("A1")
+            Application.CutCopyMode = False
+            
+                       
+                entryForm.lstdata.ColumnCount = 25
+                entryForm.lstdata.ColumnWidths = "35,50,50,60,50,60,50,50,60,40"
+                entryForm.lstdata.ColumnHeads = True
+                 entryForm.lstdata.RowSource = "search!A2:Y2"
+                 
+        
+        End If
+    shMaindata.AutoFilterMode = False
+    
+    
+ 
+        Application.ScreenUpdating = True
+  
+    
+        
+
+
+End Sub
+
+Sub SearchOtrs()
+        Application.ScreenUpdating = False
+        Dim shMaindata As Worksheet
+        Dim shSearchData As Worksheet
+        
+       
+        Dim idataRow As Long
+        Dim iSearchRow As Long
+        
+        Dim sOtrs As String
+     
+        Set shMaindata = ThisWorkbook.Sheets("maindata")
+        Set shSearchData = ThisWorkbook.Sheets("search")
+        sOtrs = entryForm.txtOtrs.Value
+        
+        idataRow = shMaindata.Range("a" & Application.Rows.Count).End(xlUp).Row
+         '   If shMaindata.FilterMode = True Then
+         '  shMaindata.AutoFilter = False
+          '  End If
+         
+         shMaindata.Range("A1:Y" & idataRow).AutoFilter field:=7, Criteria1:=sOtrs
+        
+        If Application.WorksheetFunction.Subtotal(3, shMaindata.Range("G:G")) >= 2 Then
+            
+            shSearchData.Cells.Clear
+             
+            shMaindata.AutoFilter.Range.Copy shSearchData.Range("A1")
+            Application.CutCopyMode = False
+            
+            iSearchRow = shSearchData.Range("A" & Application.Rows.Count).End(xlUp).Row
+            
+                entryForm.lstdata.ColumnCount = 25
+                entryForm.lstdata.ColumnWidths = "35,50,50,60,50,60,50,50,60,40"
+                entryForm.lstdata.ColumnHeads = True
+                
+            If iSearchRow > 1 Then
+                entryForm.lstdata.RowSource = "search!A2:y" & iSearchRow
+                
+             Else
+         
+           
+            End If
+        Else
+          shSearchData.Cells.Clear
+             
+            shMaindata.AutoFilter.Range.Copy shSearchData.Range("A1")
+            Application.CutCopyMode = False
+            
+                       
+                entryForm.lstdata.ColumnCount = 25
+                entryForm.lstdata.ColumnWidths = "35,50,50,60,50,60,50,50,60,40"
+                entryForm.lstdata.ColumnHeads = True
+                 entryForm.lstdata.RowSource = "search!A2:Y2"
+                 
+        
+        End If
+    shMaindata.AutoFilterMode = False
+    Application.ScreenUpdating = True
+    
+        
+
+
+End Sub
+
+
+Function ValidEmail(email As String) As Boolean
+ Dim oRegEx As Object
+ Set oRegEx = CreateObject("VBScript.RegExp")
+ With oRegEx
+    .Pattern = "^&#91;\w-\.]{1,}\@(&#91;\da-zA-Z-]{1,}\.){1,}&#91;\da-zA-Z-]{2,3}$"
+    ValidEmail = .Test(email)
+ End With
+ Set oRegEx = Nothing
+End Function
+Function ValidEntry() As Boolean
+ValidEntry = True
+
+With entryForm
+
+    'Default Color
+    .txtContact.BackColor = vbWhite
+    .txtOtrs.BackColor = vbWhite
+     .txtReqdt.BackColor = vbWhite
+    .txtLocation.BackColor = vbWhite
+    .cmbStatus.BackColor = vbWhite
+      'Validating Mobile Number
+
+    If Trim(.txtContact.Value) = "" Or Len(.txtContact.Value) < 10 Or Len(.txtContact.Value) > 10 Or Not IsNumeric(.txtContact.Value) Then
+        MsgBox "Please enter a valid Contact number.", vbOKOnly + vbInformation, "Invalid Entry"
+        .txtContact.SetFocus
+        
+        ValidEntry = False
+        Exit Function
+    End If
+    If Trim(.txtOtrs.Value) = "" Or Len(.txtOtrs.Value) < 7 Or Len(.txtOtrs.Value) > 8 Or Not IsNumeric(.txtOtrs.Value) Then
+        MsgBox "Please enter a valid OTRS number.", vbOKOnly + vbInformation, "Invalid Entry"
+        
+        .txtOtrs.SetFocus
+        ValidEntry = False
+        Exit Function
+    End If
+
+    'Validating DOR
+
+    If Trim(.txtReqdt.Value) = "" Then
+        MsgBox "Date is blank. Please enter request date.", vbOKOnly + vbInformation, "Invalid Entry"
+        .txtReqdt.SetFocus
+      
+        ValidEntry = False
+        Exit Function
+    End If
+ 'Validating Address
+
+    If Trim(.txtLocation.Value) = "" Then
+        MsgBox "Location is blank. Please enter a Location/GPS/Address.", vbOKOnly + vbInformation, "Invalid Entry"
+        .txtLocation.SetFocus
+      
+        ValidEntry = False
+        Exit Function
+    End If
+   
+
+    If Trim(.cmbStatus.Value) = "" Then
+        MsgBox "Please select the Status from drop-down.", vbOKOnly + vbInformation, "Invalid Entry"
+        .cmbStatus.SetFocus
+       
+        ValidEntry = False
+        Exit Function
+    End If
+
+     
+End With
+End Function
+Sub SearchStatus()
+             
+        Application.ScreenUpdating = False
+        Dim shMaindata As Worksheet
+        Dim shSearchData As Worksheet
+        
+       
+        Dim idataRow As Long
+        Dim iSearchRow As Long
+        
+        Dim sStatus As String
+     
+        Set shMaindata = ThisWorkbook.Sheets("maindata")
+        Set shSearchData = ThisWorkbook.Sheets("search")
+        sStatus = entryForm.cmbStatus.Value
+        
+        idataRow = shMaindata.Range("A" & Application.Rows.Count).End(xlUp).Row
+         '   If shMaindata.FilterMode = True Then
+         '  shMaindata.AutoFilter = False
+          '  End If
+         
+         shMaindata.Range("A1:Y" & idataRow).AutoFilter field:=9, Criteria1:=sStatus
+        
+      '  If Application.WorksheetFunction.Subtotal(3, Range("E:E")) >= 2 Then
+            
+            shSearchData.Cells.Clear
+             
+            shMaindata.AutoFilter.Range.Copy shSearchData.Range("A1")
+            Application.CutCopyMode = False
+            
+            iSearchRow = shSearchData.Range("A" & Application.Rows.Count).End(xlUp).Row
+            
+               entryForm.lstdata.ColumnCount = 25
+                entryForm.lstdata.ColumnWidths = "35,50,50,60,50,60,50,50,60,40"
+                entryForm.lstdata.ColumnHeads = True
+                
+            If iSearchRow > 1 Then
+                entryForm.lstdata.RowSource = "search!A2:Y" & iSearchRow
+                
+            Else
+         
+           
+           ' End If
+     '   Else
+          shSearchData.Cells.Clear
+             
+            shMaindata.AutoFilter.Range.Copy shSearchData.Range("A1")
+            Application.CutCopyMode = False
+            
+                     entryForm.lstdata.ColumnCount = 25
+                entryForm.lstdata.ColumnWidths = "35,50,50,60,50,60,50,50,60,40"
+                entryForm.lstdata.ColumnHeads = True
+                 entryForm.lstdata.RowSource = "search!A2:Y2"
+                 
+        
+        End If
+    shMaindata.AutoFilterMode = False
+    
+    
+ 
+        Application.ScreenUpdating = True
+  
+    
+        
+
+
+End Sub
+
