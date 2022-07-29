@@ -1,0 +1,48 @@
+Option Explicit
+Dim objFSO, objFile As Object
+Dim objConnection, objRecordset As Object
+Dim LastLocalChange, LastDbUpdate As Date
+Dim DbFile, ConnString  As String
+
+
+
+Sub SyncToDatabase()
+DbFile = Sheet1.Range("Y5").Value
+LastLocalChange = Sheet1.Range("y4").Value
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+  If objFSO.FileExists(DbFile) Then
+    Set objFile = objFSO.Getfile(DbFile)
+      '  If objFile.datelastmodified < LastLocalChange Then
+        Kill (DbFile)
+        ActiveWorkbook.Sheets("maindata").Copy
+        ActiveWorkbook.SaveAs DbFile, FileFormat:=51
+        ActiveWorkbook.Close False
+       
+    Else
+    MsgBox "File does not exist", vbOKOnly + vbInformation, "Error"
+    
+End If
+
+End Sub
+
+Sub SyncFromDatabase()
+LastLocalChange = Sheet1.Range("y4").Value
+DbFile = Sheet1.Range("Y5").Value
+Set objFSO = CreateObject("Scripting.FilesystemObject")
+Set objFile = objFSO.Getfile(DbFile)
+
+' If objFile.datelastmodified > LastLocalChange Then
+    Set objConnection = CreateObject("ADODB.Connection")
+    Set objRecordset = CreateObject("ADODB.Recordset")
+    objConnection.Open "Provider=Microsoft.ACE.OLEDB.12.0;" & "Data Source=" & Sheet1.Range("y5").Value & ";Extended Properties=""Excel 12.0 Xml;HDR=Yes;IMEX=0"";"
+    objRecordset.Open "Select*FROM[maindata$]", objConnection
+ 
+    maindata.Range("A2").CopyFromRecordset objRecordset
+    maindata.Columns("o").NumberFormat = "MM/DD/YY HH:MM"
+    maindata.Columns("r").NumberFormat = "MM/DD/YY HH:MM"
+    maindata.Columns("u").NumberFormat = "MM/DD/YY HH:MM"
+    
+    objRecordset.Close
+    objConnection.Close
+  '  End If
+End Sub
