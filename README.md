@@ -1,4 +1,4 @@
-# This all started witha plain dumb Excel sheet 
+# This all started with a plain dumb Excel sheet 
 where we were adding data about new sales requests for my Company. So I improvised and moced it to Google Spreadsheet,
 but the ides was dropped by management for unknow reason. So the challenge was for multiple peoples work on same file which excel won't allow so there was inefficiency in the work.
 Also entering and editing the data just in rows and couplms was time consuming and was a mess.
